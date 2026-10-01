@@ -9,27 +9,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="97927df4-5bf7-490a-a0d6-6bd923acffa4" name="Changes" comment="Сделал логирование к контроллерам и сервисам">
-      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ru/bibikov/myblogbackapp/controller/ImageRestControllerTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ru/bibikov/myblogbackapp/controller/PostRestControllerTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ru/bibikov/myblogbackapp/service/FileServiceTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ru/bibikov/myblogbackapp/service/PostServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
+    <list default="true" id="97927df4-5bf7-490a-a0d6-6bd923acffa4" name="Changes" comment="Сделал pom.xml с нужными зависимостями">
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/MyBlogBackAppApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/config/Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/config/JdbcConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/controller/CommentRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/controller/CommentRestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/controller/ImageRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/controller/ImageRestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/dto/CreatePostRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/dto/CreatePostRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/exception/global/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/exception/global/GlobalExceptionHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/model/Comment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/model/Comment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/model/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/model/Post.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/model/Tag.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/model/Tag.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/repository/CommentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/repository/CommentRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/service/CommentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/service/CommentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/service/FileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/service/FileService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/service/PostService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/config/CorsConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/config/CorsFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/config/JdbcConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/config/PersistenceConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/config/WebConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,8 +28,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Exception" />
-        <option value="Class" />
         <option value="JUnit5 Test Class" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -191,8 +179,13 @@
     "Maven.my-blog-back-app [clean].executor": "Run",
     "Maven.my-blog-back-app [compile].executor": "Run",
     "Maven.my-blog-back-app [package].executor": "Run",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
+    "Spring Boot.MyBlogBackAppApplication.executor": "Run",
     "Tomcat Server.Tomcat 10.1.55.executor": "Run",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
@@ -232,7 +225,7 @@
       <recent name="ru.bibikov.myblogbackapp.service" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.ImageRestControllerTest">
+  <component name="RunManager" selected="Spring Boot.MyBlogBackAppApplication">
     <configuration name="ImageRestControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="my-blog-back-app" />
       <extension name="coverage">
@@ -259,22 +252,6 @@
       <option name="PACKAGE_NAME" value="ru.bibikov.myblogbackapp.controller" />
       <option name="MAIN_CLASS_NAME" value="ru.bibikov.myblogbackapp.controller.ImageRestControllerTest" />
       <option name="METHOD_NAME" value="addOrUpdateImage" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ImageRestControllerTest.getImage" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="my-blog-back-app" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ru.bibikov.myblogbackapp.controller.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="ru.bibikov.myblogbackapp.controller" />
-      <option name="MAIN_CLASS_NAME" value="ru.bibikov.myblogbackapp.controller.ImageRestControllerTest" />
-      <option name="METHOD_NAME" value="getImage" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -308,6 +285,19 @@
       <option name="MAIN_CLASS_NAME" value="ru.bibikov.myblogbackapp.controller.ImageRestControllerTest" />
       <option name="METHOD_NAME" value="getImagePostNotFound" />
       <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MyBlogBackAppApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="my-blog-back-app" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="ru.bibikov.myblogbackapp.MyBlogBackAppApplication" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ru.bibikov.myblogbackapp.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -408,18 +398,18 @@
     <list>
       <item itemvalue="JUnit.ImageRestControllerTest" />
       <item itemvalue="JUnit.ImageRestControllerTest.addOrUpdateImage" />
-      <item itemvalue="JUnit.ImageRestControllerTest.getImage" />
       <item itemvalue="JUnit.ImageRestControllerTest.getImageFileNotFoundOnDisk" />
       <item itemvalue="JUnit.ImageRestControllerTest.getImagePostNotFound" />
+      <item itemvalue="Spring Boot.MyBlogBackAppApplication" />
       <item itemvalue="Tomcat Server.Tomcat 10.1.55" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Spring Boot.MyBlogBackAppApplication" />
         <item itemvalue="JUnit.ImageRestControllerTest" />
         <item itemvalue="JUnit.ImageRestControllerTest.addOrUpdateImage" />
         <item itemvalue="JUnit.ImageRestControllerTest.getImageFileNotFoundOnDisk" />
         <item itemvalue="JUnit.ImageRestControllerTest.getImagePostNotFound" />
-        <item itemvalue="JUnit.ImageRestControllerTest.getImage" />
       </list>
     </recent_temporary>
   </component>
@@ -467,7 +457,7 @@
       <workItem from="1785512009826" duration="4252000" />
       <workItem from="1786346620067" duration="9685000" />
       <workItem from="1786367828152" duration="12363000" />
-      <workItem from="1790851234742" duration="2839000" />
+      <workItem from="1790851234742" duration="4374000" />
     </task>
     <task id="LOCAL-00001" summary="Остановил свою работу на ошибке SQL 07006 при использовании метода updatePost. Переделал полностью код для репозитория и сервиса для постов.">
       <option name="closed" value="true" />
@@ -525,7 +515,15 @@
       <option name="project" value="LOCAL" />
       <updated>1783173472263</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Сделал pom.xml с нужными зависимостями">
+      <option name="closed" value="true" />
+      <created>1790856868599</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1790856868599</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -562,7 +560,8 @@
     <MESSAGE value="Отправка на GitHub" />
     <MESSAGE value="Сделал валидацию и сделал по каждой сущности свой контроллер" />
     <MESSAGE value="Сделал логирование к контроллерам и сервисам" />
-    <option name="LAST_COMMIT_MESSAGE" value="Сделал логирование к контроллерам и сервисам" />
+    <MESSAGE value="Сделал pom.xml с нужными зависимостями" />
+    <option name="LAST_COMMIT_MESSAGE" value="Сделал pom.xml с нужными зависимостями" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
