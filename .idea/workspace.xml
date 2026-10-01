@@ -9,15 +9,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="97927df4-5bf7-490a-a0d6-6bd923acffa4" name="Changes" comment="Сделал pom.xml с нужными зависимостями">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/MyBlogBackAppApplication.java" afterDir="false" />
+    <list default="true" id="97927df4-5bf7-490a-a0d6-6bd923acffa4" name="Changes" comment="Создал запускной класс и добавил в application.properties нужные данные и дополнения">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/config/CorsConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/config/CorsFilter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/config/JdbcConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/config/PersistenceConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/config/WebConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/model/Comment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/model/Comment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/model/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/model/Post.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/model/Tag.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/model/Tag.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -457,7 +453,7 @@
       <workItem from="1785512009826" duration="4252000" />
       <workItem from="1786346620067" duration="9685000" />
       <workItem from="1786367828152" duration="12363000" />
-      <workItem from="1790851234742" duration="4374000" />
+      <workItem from="1790851234742" duration="6729000" />
     </task>
     <task id="LOCAL-00001" summary="Остановил свою работу на ошибке SQL 07006 при использовании метода updatePost. Переделал полностью код для репозитория и сервиса для постов.">
       <option name="closed" value="true" />
@@ -523,7 +519,15 @@
       <option name="project" value="LOCAL" />
       <updated>1790856868599</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Создал запускной класс и добавил в application.properties нужные данные и дополнения">
+      <option name="closed" value="true" />
+      <created>1790858460215</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1790858460215</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -561,7 +565,8 @@
     <MESSAGE value="Сделал валидацию и сделал по каждой сущности свой контроллер" />
     <MESSAGE value="Сделал логирование к контроллерам и сервисам" />
     <MESSAGE value="Сделал pom.xml с нужными зависимостями" />
-    <option name="LAST_COMMIT_MESSAGE" value="Сделал pom.xml с нужными зависимостями" />
+    <MESSAGE value="Создал запускной класс и добавил в application.properties нужные данные и дополнения" />
+    <option name="LAST_COMMIT_MESSAGE" value="Создал запускной класс и добавил в application.properties нужные данные и дополнения" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
