@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.bibikov.myblogbackapp.exception.comment.CommentIdIsNull;
 import ru.bibikov.myblogbackapp.exception.comment.CommentWithIdNotFound;
+import ru.bibikov.myblogbackapp.exception.post.PostIdIsNull;
+import ru.bibikov.myblogbackapp.exception.post.PostWithIdNotFound;
 import ru.bibikov.myblogbackapp.model.Comment;
 import ru.bibikov.myblogbackapp.repository.CommentRepository;
 
@@ -18,6 +20,7 @@ public class CommentService {
 
     public Comment createComment(Long postId,String comment){
         log.info("Создание комментария с post_id={}: comment='{}'",postId,comment);
+        validatePostId(postId);
         Long commentId= repository.createComment(postId,comment);
         log.info("Создание комментария успешно совершено, присвоено comment_id={}",commentId);
         repository.updateCommentCountIncrementInPost(postId);
@@ -26,19 +29,21 @@ public class CommentService {
 
     public List<Comment> getComments(Long id){
         log.debug("Получение комментариев с post_id={}",id);
-        validateId(id);
+        validatePostId(id);
         return repository.getComments(id);
     }
 
     public Comment getComment(Long id,Long postId){
         log.debug("Получение комментария с comment_id={} и post_id={}",id,postId);
         validateId(id);
+        validatePostId(postId);
         return repository.getComment(id,postId);
     }
 
     public Comment updateComment(Long commentId,Long postId,String text){
         log.info("Обновление комментария с comment_id={} и post_id={}: text='{}'",commentId,postId,text);
         validateId(commentId);
+        validatePostId(postId);
         repository.updateComment(commentId,postId,text);
         log.info("Комментарий с comment_id={} успешно обновлен",commentId);
         return repository.getComment(commentId,postId);
@@ -47,6 +52,7 @@ public class CommentService {
     public void deleteComment(Long commentId,Long postId){
         log.info("Удаление комментария с comment_id={} и post_id={}",commentId,postId);
         validateId(commentId);
+        validatePostId(postId);
         repository.deleteComment(commentId);
         repository.updateCommentCountDecrementInPost(postId);
         log.info("Комментарий с comment_id={} и post_id={} успешно удален",commentId,postId);
@@ -56,6 +62,13 @@ public class CommentService {
             throw new CommentIdIsNull("ID комментария равен нулю");
         }if (!repository.existId(commentId)){
             throw new CommentWithIdNotFound("Комментарий с таким ID не найден");
+        }
+    }
+    private void validatePostId(Long id){
+        if (id==null){
+            throw new PostIdIsNull("ID поста равен нулю");
+        }if (!repository.existPostId(id)){
+            throw new PostWithIdNotFound("Пост с таким ID не найден");
         }
     }
 }
