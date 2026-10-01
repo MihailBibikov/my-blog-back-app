@@ -22,6 +22,7 @@ public class CommentRepository {
     private static final String DELETE_COMMENT_BY_ID="delete from comments where id=?";
     private static final String UPDATE_COMMENT_COUNT_DECREMENT_IN_POST="update posts set comments_count=comments_count-1 where id=?";
     private static final String COMMENT_ID_IS_EXIST="select exists(select 1 from comments where id=?)";
+    private static final String POST_ID_IS_EXIST="select exists(select 1 from posts where id=?)";
 
     private final RowMapper<Comment> commentRowMapper=(rs, rowNum)->{
         Comment comment=new Comment();
@@ -63,4 +64,7 @@ public class CommentRepository {
         return jdbcTemplate.queryForObject(COMMENT_ID_IS_EXIST,Boolean.class,id);
     }
 
+    public boolean existPostId(Long id) {
+        return jdbcTemplate.queryForObject(POST_ID_IS_EXIST,Boolean.class,id);
+    }
 }

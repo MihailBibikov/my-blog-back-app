@@ -35,23 +35,6 @@ public class FileService {
 
     private final FileRepository repository;
 
-    /*public String saveImage(MultipartFile multipartFile) {
-        try {
-            String fileName = multipartFile.getOriginalFilename();
-            String nameWithoutPrefix = extract(fileName);
-            String newNameFile = UUID.randomUUID() + nameWithoutPrefix;
-            Path uploadPath = Paths.get(uploadDir);
-            Files.createDirectories(uploadPath);
-            Path filePath=uploadPath.resolve(newNameFile);
-            try(InputStream inputStream=multipartFile.getInputStream()){
-                Files.copy(inputStream,filePath, StandardCopyOption.REPLACE_EXISTING);
-            }
-            return newNameFile;
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "";
-    }*/
     public String saveImage(MultipartFile file) {
         log.info("=== START saveImage ===");
         log.info("File original name: {}", file.getOriginalFilename());

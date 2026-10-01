@@ -43,4 +43,5 @@ public class ImageRestController {
                 .contentType(MediaType.parseMediaType(contentType))
                 .body(resource);
     }
+
 }

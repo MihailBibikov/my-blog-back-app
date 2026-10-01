@@ -3,7 +3,10 @@ package ru.bibikov.myblogbackapp.service;
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import ru.bibikov.myblogbackapp.dto.PostPreviewDto;
 import ru.bibikov.myblogbackapp.dto.PostResponse;
 import ru.bibikov.myblogbackapp.exception.post.PostIdIsNull;
@@ -64,6 +67,8 @@ public class PostService {
         post.setTags(repository.getTags(id));
         return post;
     }
+
+
 
     public int likesIncrement(Long id){
         log.debug("Инкрементация лайков с post_id={}",id);
