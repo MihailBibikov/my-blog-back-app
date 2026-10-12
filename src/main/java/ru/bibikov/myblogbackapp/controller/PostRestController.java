@@ -6,10 +6,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.bibikov.myblogbackapp.dto.*;
 import ru.bibikov.myblogbackapp.model.Post;
+import ru.bibikov.myblogbackapp.model.Tag;
 import ru.bibikov.myblogbackapp.service.PostService;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Set;
 
 
 @RestController
@@ -19,6 +21,7 @@ import java.util.List;
 public class PostRestController {
 
     private final PostService postService;
+
 
 
     @PostMapping()
@@ -37,38 +40,37 @@ public class PostRestController {
                                  @RequestParam(name = "pageNumber") int pageNumber,
                                  @RequestParam(name = "pageSize") int pageSize){
         log.debug("Запрос постов: search='{}', page={}, size={}",search,pageNumber,pageSize);
-        return postService.getPosts(search,pageNumber,pageSize);
+        PostResponse response= postService.findAll(search,pageNumber,pageSize);
+        return response;
     }
-
     @GetMapping("/{id}")
     public PostPreviewDto getPost(@PathVariable(name = "id") Long id){
+
         log.debug("Запрос поста по id={}",id);
-        Post post=postService.getPost(id);
+        Post post=postService.findById(id);
         return PostPreviewDto.builder()
                 .id(post.getId())
                 .title(post.getTitle())
                 .text(post.getText())
-                .tags(post.getTags() != null ? post.getTags() : List.of())
+                .tags(post.getTags().stream().map(Tag::getName).toList() != null ? post.getTags().stream().map(Tag::getName).toList() : List.of())
                 .likesCount(post.getLikesCount())
                 .commentsCount(post.getCommentsCount())
                 .build();
     }
-
     @PutMapping("/{id}")
     public PostPreviewDto updatePost(@PathVariable(name = "id") Long id,
                                      @RequestBody UpdatePostRequest request){
         log.info("Обновление поста с id='{}': title='{}', text='{}', tags={}",id,request.getTitle(),request.getText(),request.getTags());
         return postService.updatePost(id,request.getTitle(),request.getText(),request.getTags());
     }
+        @DeleteMapping("/{id}")
+        public ResponseEntity<Void> deletePost(@PathVariable(name = "id") Long id){
+            log.info("Удаление поста с id={}",id);
+            postService.deletePost(id);
+            return ResponseEntity.ok().build();
+        }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePost(@PathVariable(name = "id") Long id){
-        log.info("Удаление поста с id={}",id);
-        postService.deletePost(id);
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/{id}/likes")
+        @PostMapping("/{id}/likes")
     public ResponseEntity<Integer> likesIncrement(@PathVariable(name="id") Long id){
         log.info("Инкрементация лайков по id={}",id);
         return ResponseEntity.ok(postService.likesIncrement(id));

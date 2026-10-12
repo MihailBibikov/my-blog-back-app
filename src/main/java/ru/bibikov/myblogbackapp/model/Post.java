@@ -1,11 +1,9 @@
 package ru.bibikov.myblogbackapp.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.List;
@@ -13,9 +11,9 @@ import java.util.Set;
 
 
 @Builder
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@Setter
+@RequiredArgsConstructor
 @Entity
 @Table(name="posts")
 public class Post {
@@ -34,13 +32,25 @@ public class Post {
     private int commentsCount;
     @Column(name = "image")
     private String image;
-    @SuppressWarnings("JpaAttributeTypeInspection")
-    @ManyToMany
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "post_tags",
             joinColumns = @JoinColumn(name = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
-    @Builder.Default
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<Tag> tags=new HashSet<>();
+
+    @Builder
+    public Post(Long id, String title, String text, int likesCount, int commentsCount, String image, Set<Tag> tags) {
+        this.id = id;
+        this.title = title;
+        this.text = text;
+        this.likesCount = likesCount;
+        this.commentsCount = commentsCount;
+        this.image = image;
+        this.tags = tags !=null?tags:new HashSet<>();
+    }
 }

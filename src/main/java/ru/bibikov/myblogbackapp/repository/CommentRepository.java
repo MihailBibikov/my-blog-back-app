@@ -1,4 +1,5 @@
 package ru.bibikov.myblogbackapp.repository;
+/*
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -28,7 +29,7 @@ public class CommentRepository {
         Comment comment=new Comment();
         comment.setId(rs.getLong("id"));
         comment.setText(rs.getString("text"));
-        comment.setPostId(rs.getLong("post_id"));
+        comment.getPost().setId(rs.getLong("post_id"));
         return comment;
     };
 
@@ -67,4 +68,17 @@ public class CommentRepository {
     public boolean existPostId(Long id) {
         return jdbcTemplate.queryForObject(POST_ID_IS_EXIST,Boolean.class,id);
     }
+}
+*/
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import ru.bibikov.myblogbackapp.model.Comment;
+import ru.bibikov.myblogbackapp.model.Post;
+
+import java.util.List;
+
+public interface CommentRepository extends JpaRepository<Comment,Long> {
+    List<Comment> findAllByPost_Id(Long postId);
+
+    Comment findByIdAndPost_Id(Long id, Long postId);
 }
