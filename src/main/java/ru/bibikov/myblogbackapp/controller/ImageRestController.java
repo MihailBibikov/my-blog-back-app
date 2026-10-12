@@ -22,7 +22,7 @@ import java.nio.file.Paths;
 public class ImageRestController {
     private final FileService service;
 
-    @PutMapping("/{id}/image")
+    /*@PutMapping("/{id}/image")
     public ResponseEntity<Void> addOrUpdateImage(@PathVariable(name = "id") Long id,
                                                  @RequestParam(name = "image") MultipartFile file){
         log.info("Загрузка изображения для поста с post_id={}: image={}",id,file);
@@ -43,5 +43,5 @@ public class ImageRestController {
                 .contentType(MediaType.parseMediaType(contentType))
                 .body(resource);
     }
-
+*/
 }

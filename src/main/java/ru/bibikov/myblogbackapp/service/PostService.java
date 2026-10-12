@@ -1,12 +1,13 @@
 package ru.bibikov.myblogbackapp.service;
 
 import lombok.RequiredArgsConstructor;
-
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.transaction.annotation.Transactional;
 import ru.bibikov.myblogbackapp.dto.PostPreviewDto;
 import ru.bibikov.myblogbackapp.dto.PostResponse;
 import ru.bibikov.myblogbackapp.exception.post.PostIdIsNull;
@@ -14,135 +15,149 @@ import ru.bibikov.myblogbackapp.exception.post.PostWithIdNotFound;
 import ru.bibikov.myblogbackapp.model.Post;
 import ru.bibikov.myblogbackapp.model.Tag;
 import ru.bibikov.myblogbackapp.repository.PostRepository;
+import ru.bibikov.myblogbackapp.repository.TagRepository;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PostService {
     private final PostRepository repository;
+    private final TagRepository tagRepository;
 
-    public PostPreviewDto createPost(String title,
-                                     String text,
-                                     List<String> tags){
+    @Transactional
+    public PostPreviewDto createPost(String title, String text, List<String> tags) {
         log.info("Начало создания поста: title='{}', text='{}', tags={}",title,text,tags);
-        Long postId= repository.createPostReturnId(title,text);
-        log.debug("Создан пост с id={}",postId);
-        return checkTags(tags,postId);
-    }
 
+        log.debug("Начата проверка тегов {} на наличие их в таблице",tags);
+        Set<Tag> managedTags=new HashSet<>();
+        for (String tagName:tags){
+            Tag existingTag=tagRepository.findByName(tagName).orElse(null);
+            if (existingTag!=null){
+                managedTags.add(existingTag);
+            }
+            else {
+                Tag tag=new Tag();
+                tag.setName(tagName);
+                managedTags.add(tag);
+            }
+        }
+        log.debug("Проверка закончена. Итоговые теги для сохранения tags={}",managedTags);
 
-    public PostResponse getPosts(String search, int pageNumber, int pageSize) {
-        log.debug("Получение постов: search='{}', page_number={}, page_size={}",search,pageNumber,pageSize);
-        String searchPattern = "%" + search + "%";
-
-        int totalPosts = repository.countPosts(searchPattern);
-
-        int lastPage = (int) Math.ceil((double) totalPosts / pageSize);
-        lastPage = Math.max(lastPage, 1);
-
-        boolean hasPrev = pageNumber > 1;
-        boolean hasNext = pageNumber < lastPage;
-
-        int offset = (pageNumber - 1) * pageSize;
-
-        List<PostPreviewDto> posts = repository.findPostPaginated(searchPattern,pageSize,offset);
-
-        return PostResponse.builder()
-                .posts(posts)
-                .hasPrev(hasPrev)
-                .hasNext(hasNext)
-                .lastPage(lastPage)
+        Post post=repository.save(Post.builder()
+                .title(title)
+                .text(text)
+                .tags(managedTags)
+                .build());
+        log.debug("Создан пост с id={}",post.getId());
+        Post dto=repository.findByIdWithTags(post.getId()).orElseThrow(()->new PostWithIdNotFound("Not found"));
+        return PostPreviewDto.builder()
+                .id(dto.getId())
+                .title(dto.getTitle())
+                .text(dto.getText())
+                .tags(dto.getTags().stream().map(Tag::getName).toList())
+                .commentsCount(dto.getCommentsCount())
+                .likesCount(dto.getLikesCount())
                 .build();
     }
 
-    public Post getPost(Long id) {
-        log.debug("Получение поста с post_id={}",id);
-        validateId(id);
-        Post post=repository.getPostWithId(id);
-        post.setTags(repository.getTags(id));
-        return post;
-    }
+    public PostResponse findAll(String search, int pageNumber, int pageSize){
+        log.debug("Получение постов: search='{}', page_number={}, page_size={}",search,pageNumber,pageSize);
+        Pageable pageable=PageRequest.of(pageNumber-1,pageSize,Sort.by("id").descending());
 
-
-
-    public int likesIncrement(Long id){
-        log.debug("Инкрементация лайков с post_id={}",id);
-        validateId(id);
-        return repository.likesIncrement(id);
-    }
-
-    public PostPreviewDto updatePost(Long postId, String title,String text, List<String > tags){
-        log.info("Обновление поста с post_id={}: title='{}', text='{}', tags={}",postId,title,text,tags);
-        validateId(postId);
-        repository.updatePost(postId,title,text);
-        return checkTags(tags,postId);
-    }
-
-    public void deletePost(Long id){
-        log.info("Удаление поста с post_id={}",id);
-        validateId(id);
-        repository.deletePost(id);
-        log.info("Пост с post_id={} успешно удален",id);
-    }
-
-    private PostPreviewDto checkTags(List<String> tags,Long postId){
-        log.debug("Начата проверка тегов {} для поста с post_id={}",tags,postId);
-        validateId(postId);
-        repository.deletePostTag(postId);
-        String placeholders=String.join(",", Collections.nCopies(tags.size(),"?"));
-        if (placeholders.isEmpty()) {
-            log.debug("Проверка закончена без тегов");
-            Post post=repository.getPostWithId(postId);
-
-            return PostPreviewDto.builder()
-                    .id(post.getId())
-                    .title(post.getTitle())
-                    .text(post.getText())
-                    .likesCount(post.getLikesCount())
-                    .commentsCount(post.getCommentsCount())
-                    .tags(List.of())
-                    .build();
-        }
-        log.debug("Проверка тегов {} в таблице",tags);
-        List<Tag> tagsExist=repository.tagsExist(placeholders,tags);
-
-        Map<String,Long> tagNameToId=new HashMap<>();
-        for (Tag tag:tagsExist){
-            tagNameToId.put(tag.getName(),tag.getId());
+        Page<Post> posts;
+        if (search == null || search.trim().isEmpty()) {
+            posts=repository.findAllWithTags(pageable);
+        } else {
+            posts=repository.findByTitleContainingIgnoreCase(search,pageable);
         }
 
-        for (String tagName:tags){
-            if (!tagNameToId.containsKey(tagName)) {
-                Long newId = repository.createTag(tagName);
-                tagNameToId.put(tagName, newId);
-            }
-        }
-        for (String tagName:tags){
-            Long tagId=tagNameToId.get(tagName);
-            repository.createPostTagChain(postId,tagId);
-        }
-        log.debug("Созданы все связи постов и тегов");
-        Post post=repository.getPostWithId(postId);
-        List<String> tag=repository.getTags(postId);
-        log.debug("Обработано {} тегов",tag.size());
+        Page<PostPreviewDto> dto=posts.map(this::mapToPreviewDto);
+        return PostResponse.builder()
+                .posts(dto.getContent())
+                .hasPrev(dto.hasPrevious())
+                .hasNext(dto.hasNext())
+                .lastPage(dto.getTotalPages())
+                .build();
+    }
+
+    private PostPreviewDto mapToPreviewDto(Post post) {
+        List<String> tagNames=Optional.ofNullable(post.getTags())
+                .orElse(Collections.emptySet())
+                .stream()
+                .map(Tag::getName)
+                .toList();
+
         return PostPreviewDto.builder()
                 .id(post.getId())
                 .title(post.getTitle())
                 .text(post.getText())
-                .likesCount(post.getLikesCount())
+                .tags(tagNames)
                 .commentsCount(post.getCommentsCount())
-                .tags(tag)
+                .likesCount(post.getLikesCount())
                 .build();
+    }
+
+    public Post findById(Long postId){
+        validateId(postId);
+        log.debug("Получение поста с post_id={}",postId);
+        return repository.findByIdWithTags(postId).orElseThrow(() -> new PostWithIdNotFound("Post with this id not found"));
+    }
+
+    @Transactional
+    public PostPreviewDto updatePost(Long id, String title, String text, List<String> tags) {
+        validateId(id);
+        log.info("Обновление поста с post_id={}: title='{}', text='{}', tags={}",id,title,text,tags);
+        log.debug("Начата проверка тегов {} для поста с post_id={}",tags,id);
+        Set<Tag> managedTags=new HashSet<>();
+        for (String tagName:tags){
+            Tag existingTag=tagRepository.findByName(tagName).orElse(null);
+            if (existingTag!=null){
+                managedTags.add(existingTag);
+            }
+            else {
+                Tag tag=new Tag();
+                tag.setName(tagName);
+                managedTags.add(tag);
+            }
+        }
+
+        Post post=Post.builder()
+                .id(id)
+                .title(title)
+                .text(text)
+                .tags(managedTags)
+                .build();
+        repository.save(post);
+        log.debug("Обновление поста прошло успешно");
+        Post dto=repository.findByIdWithTags(id).orElseThrow(()->new PostWithIdNotFound("Post with this id not found"));
+        return PostPreviewDto.builder()
+                .id(dto.getId())
+                .title(dto.getTitle())
+                .text(dto.getText())
+                .tags(dto.getTags().stream().map(Tag::getName).toList())
+                .likesCount(dto.getLikesCount())
+                .commentsCount(dto.getCommentsCount())
+                .build();
+    }
+    @Transactional
+    public Integer likesIncrement(Long id) {
+        validateId(id);
+        log.debug("Инкрементация лайков с post_id={}",id);
+        return repository.incrementLikes(id);
+    }
+
+    public void deletePost(Long id) {
+        validateId(id);
+        log.info("Удаление поста с post_id={}",id);
+        repository.deleteById(id);
+        log.info("Пост с post_id={} успешно удален",id);
     }
     private void validateId(Long postId){
         if (postId==null){
             throw new PostIdIsNull("ID поста равен null");
-        }if (!repository.existId(postId)){
+        }if (!repository.existsById(postId)){
             throw new PostWithIdNotFound("Пост с таким ID не найден");
         }
     }

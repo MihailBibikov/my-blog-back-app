@@ -1,5 +1,6 @@
 package ru.bibikov.myblogbackapp.repository;
 
+/*
 import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -31,4 +32,11 @@ public class FileRepository {
             throw new PostIdIsNull("ID поста равен null");
         }
     }
+}
+*/
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import ru.bibikov.myblogbackapp.model.Post;
+
+public interface FileRepository extends JpaRepository<Post,Long> {
 }

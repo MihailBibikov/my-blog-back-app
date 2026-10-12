@@ -1,5 +1,6 @@
 package ru.bibikov.myblogbackapp.service;
 
+/*
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -86,4 +87,11 @@ public class FileService {
         log.info("Редактирование изображения поста с post_id={}: file='{}'",id,file);
         repository.updateImage(id,file);
     }
+}
+*/
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class FileService {
 }

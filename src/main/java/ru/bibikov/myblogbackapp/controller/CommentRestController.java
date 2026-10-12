@@ -19,6 +19,7 @@ public class CommentRestController {
 
     private final CommentService commentService;
 
+
     @PostMapping("/{id}/comments")
     public CommentResponse createComment(@RequestBody CreateCommentRequest request,
                                          @PathVariable(name = "id")Long postId){
@@ -28,10 +29,10 @@ public class CommentRestController {
         return CommentResponse.builder()
                 .id(newComment.getId())
                 .text(newComment.getText())
-                .postId(newComment.getPostId())
+                .postId(newComment.getPost().getId())
                 .build();
     }
-    @GetMapping("/{id}/comments")
+   @GetMapping("/{id}/comments")
     public List<CommentResponse> getComments(@PathVariable(name = "id")Long postId){
         log.debug("Получение всех комментарий для поста с id={}",postId);
         List<Comment> comments=commentService.getComments(postId);
@@ -40,11 +41,11 @@ public class CommentRestController {
                 .map(comment -> CommentResponse.builder()
                         .id(comment.getId())
                         .text(comment.getText())
-                        .postId(comment.getPostId())
+                        .postId(comment.getPost().getId())
                         .build())
                 .toList();
     }
-    @GetMapping("/{id}/comments/{commentId}")
+     @GetMapping("/{id}/comments/{commentId}")
     public CommentResponse getComment(@PathVariable(name = "commentId") Long commentId,
                                       @PathVariable(name = "id")Long postId){
         log.debug("Получение комментария с comment_id={} и post_id={}",commentId,postId);
@@ -52,19 +53,20 @@ public class CommentRestController {
         return CommentResponse.builder()
                 .id(comment.getId())
                 .text(comment.getText())
-                .postId(comment.getPostId())
+                .postId(comment.getPost().getId())
                 .build();
     }
     @PutMapping("/{id}/comments/{commentId}")
     public CommentResponse updateComment(@RequestBody CommentResponse request,
                                          @PathVariable(name = "commentId")Long commentId,
                                          @PathVariable(name = "id")Long postId){
+
         log.info("Обновление комментария с comment_id={} и post_id={}: text='{}'",commentId,postId,request.getText());
         Comment comment=commentService.updateComment(commentId,postId, request.getText());
         return CommentResponse.builder()
                 .id(comment.getId())
                 .text(comment.getText())
-                .postId(comment.getPostId())
+                .postId(comment.getPost().getId())
                 .build();
     }
     @DeleteMapping("/{id}/comments/{commentId}")
@@ -76,4 +78,4 @@ public class CommentRestController {
         return ResponseEntity.ok().build();
     }
 
-}
+    }

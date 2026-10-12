@@ -1,6 +1,7 @@
 package ru.bibikov.myblogbackapp.repository;
 
 
+/*
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -12,6 +13,7 @@ import ru.bibikov.myblogbackapp.model.Post;
 import ru.bibikov.myblogbackapp.model.Tag;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Repository
@@ -66,7 +68,7 @@ public class PostRepository {
         jdbcTemplate.update(CREATE_POST_TAG_CHAIN,postId,tagId);
     }
 
-    public List<Tag> tagsExist(String placeholders,List<String> tags){//updated
+    public Set<Tag> tagsExist(String placeholders,Set<Tag> tags){//updated
         String sql=buildSelectTags(placeholders);
         return jdbcTemplate.query(sql,tagRowMapper,tags.toArray());
     }
@@ -94,7 +96,7 @@ public class PostRepository {
                         text = text.substring(0, 128) + "…";
                     }
 
-                    List<String> tagsList=getTags(rs.getLong("id"));
+                    Set<Tag> tagsList=getTags(rs.getLong("id"));
 
                     return PostPreviewDto.builder()
                             .id(rs.getLong("id"))
@@ -130,10 +132,9 @@ public class PostRepository {
         return jdbcTemplate.queryForObject(INCREMENT_LIKE_BY_POST_ID,Integer.class,id);
     }
 
-    public List<String> getTags(Long postId){           //updated
+    public Set<Tag> getTags(Long postId){           //updated
         return jdbcTemplate.query(GET_TAGS_BY_POST_ID,tagRowMapper,postId).stream()
-                .map(Tag::getName)
-                .toList();
+                .collect(Collectors.toSet());
     }
 
     @Transactional
@@ -145,3 +146,37 @@ public class PostRepository {
     }
 }
 
+*/
+
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+import ru.bibikov.myblogbackapp.model.Post;
+
+import java.util.Optional;
+
+@Repository
+public interface PostRepository extends JpaRepository<Post,Long> {
+
+   int countByTitleContainingIgnoreCase(String title);
+
+   @Query("select p from Post p left join fetch p.tags where p.id= :id")
+   Optional<Post> findByIdWithTags(@Param("id")Long id);
+
+   @Modifying
+   @Query("update Post p set p.likesCount=p.likesCount+1 where p.id=:id")
+   Integer incrementLikes(@Param("id")Long id);
+
+   @Query("select distinct p from Post p left join fetch p.tags where upper(p.title) like upper(concat('%',:search,'%') ) ")
+   Page<Post> findByTitleContainingIgnoreCase(@Param("search")String title, Pageable pageable);
+
+   @Query("select distinct p from Post p left join fetch p.tags")
+   Page<Post> findAllWithTags(Pageable pageable);
+   //private static final String DELETE_POST_TAG_CHAIN_BY_POST_ID="delete from post_tags where post_id=?";
+
+}
