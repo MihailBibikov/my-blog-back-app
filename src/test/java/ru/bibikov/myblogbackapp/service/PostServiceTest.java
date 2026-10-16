@@ -4,9 +4,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import ru.bibikov.myblogbackapp.dto.PostPreviewDto;
 import ru.bibikov.myblogbackapp.dto.PostResponse;
 import ru.bibikov.myblogbackapp.exception.post.PostIdIsNull;
@@ -14,9 +16,12 @@ import ru.bibikov.myblogbackapp.exception.post.PostWithIdNotFound;
 import ru.bibikov.myblogbackapp.model.Post;
 import ru.bibikov.myblogbackapp.model.Tag;
 import ru.bibikov.myblogbackapp.repository.PostRepository;
+import ru.bibikov.myblogbackapp.repository.TagRepository;
 import ru.bibikov.myblogbackapp.utils.DataUtil;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -28,52 +33,39 @@ class PostServiceTest {
     @Mock
     private PostRepository repository;
 
+    @Mock
+    private TagRepository tagRepository;
+
     @InjectMocks
     private PostService service;
 
     @Test
     void createPostWithTagsSuccess() {
-        Post post= DataUtil.getPostPersisted();
-        List<Tag> tag= List.of(DataUtil.getTagJavaPersisted(),DataUtil.getTagEqualPersisted());
-        List<Tag> existingTagsFromDb=List.of(DataUtil.getTagJavaPersisted());
-        when(repository.createPostReturnId(post.getTitle(),post.getText())).thenReturn(post.getId());
+        Post post=DataUtil.getPostPersisted();
+        when(repository.save(any(Post.class))).thenReturn(post);
+        when(repository.findByIdWithTags(post.getId())).thenReturn(Optional.of(post));
+        when(tagRepository.findByName("Java")).thenReturn(Optional.of(DataUtil.getTagJavaPersisted()));
+        when(tagRepository.findByName("Equal")).thenReturn(Optional.of(DataUtil.getTagEqualPersisted()));
 
-        when(repository.existId(post.getId())).thenReturn(true);
-        doNothing().when(repository).deletePostTag(post.getId());
-        when(repository.tagsExist(anyString(),eq(tag.stream().map(Tag::getName).toList()))).thenReturn(existingTagsFromDb);
-        when(repository.createTag(tag.get(1).getName())).thenReturn(tag.get(1).getId());
-        doNothing().when(repository).createPostTagChain(eq(post.getId()),anyLong());
-        when(repository.getPostWithId(post.getId())).thenReturn(post);
-        when(repository.getTags(post.getId())).thenReturn(tag.stream().map(Tag::getName).toList());
+        PostPreviewDto rs=service.createPost(post.getTitle(), post.getText(), List.of("Java","Equal"));
 
-        PostPreviewDto result= service.createPost(post.getTitle(),post.getText(),tag.stream().map(Tag::getName).toList());
-
-        assertNotNull(result);
-        assertEquals(post.getId(),result.getId());
-        assertEquals(post.getTitle(),result.getTitle());
-        assertEquals(post.getText(),result.getText());
-        assertEquals(2,result.getTags().size());
-        assertTrue(result.getTags().contains("Java"));
-        assertTrue(result.getTags().contains("Equal"));
-
-        verify(repository).createPostReturnId(post.getTitle(),post.getText());
-        verify(repository).existId(post.getId());
-        verify(repository).deletePostTag(post.getId());
-        verify(repository).tagsExist(anyString(),eq(tag.stream().map(Tag::getName).toList()));
-        verify(repository,times(1)).createTag(tag.get(1).getName());
-        verify(repository,times(2)).createPostTagChain(eq(post.getId()),anyLong());
-        verify(repository).getPostWithId(post.getId());
-        verify(repository).getTags(post.getId());
+        assertNotNull(rs);
+        assertEquals(post.getTitle(),rs.getTitle());
+        assertEquals(post.getText(),rs.getText());
+        assertEquals(post.getTags().stream().map(Tag::getName).toList(),rs.getTags());
+        verify(repository).save(any(Post.class));
+        verify(repository).findByIdWithTags(post.getId());
+        verify(tagRepository).findByName("Java");
+        verify(tagRepository).findByName("Equal");
     }
 
     @Test
     void createPostWithoutTagsSuccess(){
         Post post =DataUtil.getPostPersisted();
+        post.setTags(Set.of());
 
-        when(repository.createPostReturnId(post.getTitle(),post.getText())).thenReturn(post.getId());
-        when(repository.existId(post.getId())).thenReturn(true);
-        doNothing().when(repository).deletePostTag(post.getId());
-        when(repository.getPostWithId(post.getId())).thenReturn(post);
+        when(repository.save(any(Post.class))).thenReturn(post);
+        when(repository.findByIdWithTags(post.getId())).thenReturn(Optional.of(post));
 
         PostPreviewDto result=service.createPost(post.getTitle(),post.getText(),List.of());
 
@@ -82,128 +74,137 @@ class PostServiceTest {
         assertEquals(post.getText(),result.getText());
         assertEquals(0,result.getTags().size());
 
-        verify(repository).createPostReturnId(post.getTitle(),post.getText());
-        verify(repository).existId(post.getId());
-        verify(repository).deletePostTag(post.getId());
-        verify(repository).getPostWithId(post.getId());
+        verify(repository).save(any(Post.class));
+        verify(repository).findByIdWithTags(post.getId());
+
     }
 
     @Test
-    void getPostsReturnCorrectPagination() {
+    void getPostsWithSearchParameterPagination() {
         Post post=DataUtil.getPostPersisted();
-        List<PostPreviewDto>posts=List.of(PostPreviewDto.builder()
-                        .id(post.getId())
-                        .title(post.getTitle())
-                        .text(post.getText())
-                        .likesCount(post.getLikesCount())
-                        .commentsCount(post.getCommentsCount())
-                        .tags(post.getTags())
-                        .build());
-        when(repository.countPosts("%Hello%")).thenReturn(5);
-        when(repository.findPostPaginated("%Hello%",2,0)).thenReturn(posts);
+        Page<Post> page=new PageImpl<>(List.of(post));
+        when(repository.findByTitleContainingIgnoreCase(anyString(),any(Pageable.class))).thenReturn(page);
 
-        PostResponse response=service.getPosts("Hello",1,2);
+        PostResponse response=service.findAll("Java",1,5);
 
         assertNotNull(response);
-        assertEquals(3,response.getLastPage());
+        assertEquals(1,response.getLastPage());
         assertFalse(response.isHasPrev());
-        assertTrue(response.isHasNext());
+        assertFalse(response.isHasNext());
         assertEquals(1,response.getPosts().size());
         assertEquals(post.getId(),response.getPosts().get(0).getId());
 
-        verify(repository).countPosts("%Hello%");
-        verify(repository).findPostPaginated("%Hello%",2,0);
+        verify(repository).findByTitleContainingIgnoreCase(anyString(),any(Pageable.class));
+    }
+
+    @Test
+    void getPostsWithoutSearchParameterPagination(){
+        Post post=DataUtil.getPostPersisted();
+        Page<Post> page=new PageImpl<>(List.of(post));
+        when(repository.findAllWithTags(any(Pageable.class))).thenReturn(page);
+
+        PostResponse response=service.findAll("",1,5);
+
+        assertNotNull(response);
+        assertEquals(1,response.getLastPage());
+        assertFalse(response.isHasPrev());
+        assertFalse(response.isHasNext());
+        assertEquals(1,response.getPosts().size());
+        assertEquals(post.getId(),response.getPosts().get(0).getId());
+
+        verify(repository).findAllWithTags(any(Pageable.class));
     }
 
     @Test
     void getPostsReturnHasNextFalse(){
-        when(repository.countPosts("%Hello%")).thenReturn(5);
-        when(repository.findPostPaginated("%Hello%",2,4)).thenReturn(List.of());
+        Post post=DataUtil.getPostPersisted();
+        Pageable pageable= PageRequest.of(1,1);
+        Page<Post> page=new PageImpl<>(List.of(post,Post.builder()
+                .id(1L)
+                .title("test")
+                .text("text tests")
+                .tags(Set.of())
+                .likesCount(0)
+                .commentsCount(0)
+                .build()),pageable,2);
+        when(repository.findAllWithTags(any(Pageable.class))).thenReturn(page);
 
-        PostResponse response=service.getPosts("Hello",3,2);
+        PostResponse response=service.findAll("",2,1);
 
-        assertEquals(3,response.getLastPage());
+        assertEquals(2,response.getLastPage());
         assertTrue(response.isHasPrev());
         assertFalse(response.isHasNext());
 
-        verify(repository).countPosts("%Hello%");
-        verify(repository).findPostPaginated("%Hello%",2,4);
+        verify(repository).findAllWithTags(any(Pageable.class));
     }
 
     @Test
     void getPostsReturnLastPageOne(){
-        when(repository.countPosts("%Hello%")).thenReturn(0);
-        when(repository.findPostPaginated("%Hello%",2,0)).thenReturn(List.of());
+        Post post=DataUtil.getPostPersisted();
+        Page<Post> page=new PageImpl<>(List.of(post));
+        when(repository.findAllWithTags(any(Pageable.class))).thenReturn(page);
 
-        PostResponse response=service.getPosts("Hello",1,2);
+        PostResponse response=service.findAll("",1,2);
 
         assertEquals(1,response.getLastPage());
         assertFalse(response.isHasPrev());
         assertFalse(response.isHasNext());
-        assertTrue(response.getPosts().isEmpty());
 
-        verify(repository).countPosts("%Hello%");
-        verify(repository).findPostPaginated("%Hello%",2,0);
+        verify(repository).findAllWithTags(any(Pageable.class));
     }
 
     @Test
     void getPostSuccess() {
         Post post=DataUtil.getPostPersisted();
-        Tag tag=DataUtil.getTagJavaPersisted();
 
-        when(repository.existId(post.getId())).thenReturn(true);
-        when(repository.getPostWithId(post.getId())).thenReturn(post);
-        when(repository.getTags(post.getId())).thenReturn(List.of(tag.getName()));
+        when(repository.existsById(anyLong())).thenReturn(true);
+        when(repository.findByIdWithTags(anyLong())).thenReturn(Optional.of(post));
 
-        Post result=service.getPost(post.getId());
+
+        Post result=service.findById(post.getId());
 
         assertNotNull(result);
         assertEquals(post.getId(),result.getId());
         assertEquals(post.getTitle(),result.getTitle());
         assertEquals(post.getText(),result.getText());
-        assertEquals(1,result.getTags().size());
-        assertTrue(result.getTags().contains("Java"));
+        assertEquals(2,result.getTags().size());
+        assertEquals(post.getTags(),result.getTags());
 
-        verify(repository).existId(post.getId());
-        verify(repository).getPostWithId(post.getId());
-        verify(repository).getTags(post.getId());
+        verify(repository).findByIdWithTags(anyLong());
     }
 
     @Test
     void getPostWhereIdIsNull(){
-        //when(repository.existId(anyLong())).thenReturn(false);
-
         PostIdIsNull exception=assertThrows(PostIdIsNull.class,
-                ()->service.getPost(null));
+                ()->service.findById(null));
         assertEquals("ID поста равен null",exception.getMessage());
-        verify(repository,never()).getPostWithId(null);
-        verify(repository, never()).getTags(null);
+        verify(repository,never()).findByIdWithTags(null);
     }
 
     @Test
     void getPostWhereIdNotFound(){
-        when(repository.existId(anyLong())).thenReturn(false);
+        when(repository.existsById(anyLong())).thenReturn(false);
 
         PostWithIdNotFound exception=assertThrows(PostWithIdNotFound.class,
-                ()->service.getPost(1L));
+                ()->service.findById(1L));
         assertEquals("Пост с таким ID не найден",exception.getMessage());
-        verify(repository,never()).getPostWithId(1L);
-        verify(repository, never()).getTags(1L);
+        verify(repository,never()).findByIdWithTags(1L);
+
     }
 
     @Test
     void likesIncrementSuccess() {
         long id=1L;
-        when(repository.existId(id)).thenReturn(true);
-        when(repository.likesIncrement(id)).thenReturn(2);
+        when(repository.existsById(id)).thenReturn(true);
+        when(repository.incrementLikes(id)).thenReturn(2);
 
         Integer result=service.likesIncrement(id);
 
         assertNotNull(result);
         assertEquals(2,result);
 
-        verify(repository).likesIncrement(id);
-        verify(repository).existId(id);
+        verify(repository).existsById(id);
+        verify(repository).incrementLikes(id);
     }
 
     @Test
@@ -211,35 +212,32 @@ class PostServiceTest {
         PostIdIsNull exception=assertThrows(PostIdIsNull.class,
                 ()->service.likesIncrement(null));
         assertEquals("ID поста равен null",exception.getMessage());
-        verify(repository,never()).likesIncrement(anyLong());
+        verify(repository,never()).incrementLikes(anyLong());
     }
 
     @Test
     void likesIncrementIdNotFound(){
-        when(repository.existId(anyLong())).thenReturn(false);
+        when(repository.existsById(anyLong())).thenReturn(false);
 
         PostWithIdNotFound exception=assertThrows(PostWithIdNotFound.class,
                 ()->service.likesIncrement(1L));
         assertEquals("Пост с таким ID не найден",exception.getMessage());
-        verify(repository,never()).likesIncrement(1L);
+        verify(repository,never()).incrementLikes(1L);
     }
 
     @Test
     void updatePostWithTagsSuccess() {
         Post post= DataUtil.getPostPersisted();
-        List<Tag> tag= List.of(DataUtil.getTagJavaPersisted(),DataUtil.getTagEqualPersisted());
-        List<Tag> existingTagsFromDb=List.of(DataUtil.getTagJavaPersisted());
-        when(repository.existId(post.getId())).thenReturn(true);
-        doNothing().when(repository).updatePost(post.getId(),post.getTitle(),post.getText());
+        Tag tagJava=DataUtil.getTagJavaPersisted();
+        Tag tagEqual=DataUtil.getTagEqualPersisted();
 
-        doNothing().when(repository).deletePostTag(post.getId());
-        when(repository.tagsExist(anyString(),eq(tag.stream().map(Tag::getName).toList()))).thenReturn(existingTagsFromDb);
-        when(repository.createTag(tag.get(1).getName())).thenReturn(tag.get(1).getId());
-        doNothing().when(repository).createPostTagChain(eq(post.getId()),anyLong());
-        when(repository.getPostWithId(post.getId())).thenReturn(post);
-        when(repository.getTags(post.getId())).thenReturn(tag.stream().map(Tag::getName).toList());
+        when(repository.existsById(anyLong())).thenReturn(true);
+        when(tagRepository.findByName(tagJava.getName())).thenReturn(Optional.of(tagJava));
+        when(tagRepository.findByName(tagEqual.getName())).thenReturn(Optional.of(tagEqual));
+        when(repository.save(any(Post.class))).thenReturn(post);
+        when(repository.findByIdWithTags(anyLong())).thenReturn(Optional.ofNullable(post));
 
-        PostPreviewDto result= service.updatePost(post.getId(), post.getTitle(),post.getText(),tag.stream().map(Tag::getName).toList());
+        PostPreviewDto result= service.updatePost(post.getId(), post.getTitle(),post.getText(),post.getTags().stream().map(Tag::getName).toList());
 
         assertNotNull(result);
         assertEquals(post.getId(),result.getId());
@@ -249,36 +247,30 @@ class PostServiceTest {
         assertTrue(result.getTags().contains("Java"));
         assertTrue(result.getTags().contains("Equal"));
 
-        verify(repository).updatePost(post.getId(),post.getTitle(),post.getText());
-        verify(repository,times(2)).existId(post.getId());
-        verify(repository).deletePostTag(post.getId());
-        verify(repository).tagsExist(anyString(),eq(tag.stream().map(Tag::getName).toList()));
-        verify(repository,times(1)).createTag(tag.get(1).getName());
-        verify(repository,times(2)).createPostTagChain(eq(post.getId()),anyLong());
-        verify(repository).getPostWithId(post.getId());
-        verify(repository).getTags(post.getId());
+        verify(repository).existsById(anyLong());
+        verify(tagRepository,times(2)).findByName(anyString());
+        verify(repository).save(any(Post.class));
+        verify(repository).findByIdWithTags(anyLong());
     }
 
     @Test
     void updatePostWithoutTagsSuccess(){
-        Post post =DataUtil.getPostPersisted();
+        Post post =DataUtil.getPostPersistedWithoutTags();
 
-        doNothing().when(repository).updatePost(post.getId(),post.getTitle(),post.getText());
-        when(repository.existId(post.getId())).thenReturn(true);
-        doNothing().when(repository).deletePostTag(post.getId());
-        when(repository.getPostWithId(post.getId())).thenReturn(post);
+        when(repository.existsById(anyLong())).thenReturn(true);
+        when(repository.save(any(Post.class))).thenReturn(post);
+        when(repository.findByIdWithTags(anyLong())).thenReturn(Optional.ofNullable(post));
 
         PostPreviewDto result=service.updatePost(post.getId(),post.getTitle(),post.getText(),List.of());
 
         assertNotNull(result);
+        assertEquals(post.getId(),result.getId());
         assertEquals(post.getTitle(),result.getTitle());
         assertEquals(post.getText(),result.getText());
-        assertEquals(0,result.getTags().size());
 
-        verify(repository).updatePost(post.getId(),post.getTitle(),post.getText());
-        verify(repository,times(2)).existId(post.getId());
-        verify(repository).deletePostTag(post.getId());
-        verify(repository).getPostWithId(post.getId());
+        verify(repository).existsById(anyLong());
+        verify(repository).save(any(Post.class));
+        verify(repository).findByIdWithTags(anyLong());
     }
 
     @Test
@@ -286,33 +278,31 @@ class PostServiceTest {
         PostIdIsNull exception=assertThrows(PostIdIsNull.class,
                 ()->service.updatePost(null,"Hello","Just a text",null));
         assertEquals("ID поста равен null",exception.getMessage());
-        verify(repository,never()).updatePost(null,"Hello","Just a text");
-        verify(repository,never()).existId(null);
-        verify(repository,never()).deletePostTag(null);
-        verify(repository,never()).getPostWithId(null);
+        verify(repository,never()).existsById(null);
+        verify(repository,never()).save(any(Post.class));
+        verify(repository,never()).findByIdWithTags(anyLong());
     }
     @Test
     void updatePostIdNotFound(){
-        when(repository.existId(anyLong())).thenReturn(false);
+        when(repository.existsById(anyLong())).thenReturn(false);
 
         PostWithIdNotFound exception=assertThrows(PostWithIdNotFound.class,
                 ()->service.updatePost(1L,"Hello","Just a text",null));
         assertEquals("Пост с таким ID не найден",exception.getMessage());
-        verify(repository,never()).updatePost(null,"Hello","Just a text");
-        verify(repository,never()).existId(null);
-        verify(repository,never()).deletePostTag(null);
-        verify(repository,never()).getPostWithId(null);
+        verify(repository).existsById(anyLong());
+        verify(repository,never()).save(any(Post.class));
+        verify(repository,never()).findByIdWithTags(anyLong());
     }
 
     @Test
     void deletePostSuccess() {
-        when(repository.existId(1L)).thenReturn(true);
-        when(repository.deletePost(1L)).thenReturn(1);
+        when(repository.existsById(1L)).thenReturn(true);
+        doNothing().when(repository).deleteById(1L);
 
         service.deletePost(1L);
 
-        verify(repository).existId(1L);
-        verify(repository).deletePost(1L);
+        verify(repository).existsById(1L);
+        verify(repository).deleteById(1L);
     }
 
     @Test
@@ -321,15 +311,16 @@ class PostServiceTest {
                 ()->service.deletePost(null));
         assertEquals("ID поста равен null",exception.getMessage());
 
-        verify(repository,never()).deletePost(null);
+        verify(repository,never()).deleteById(null);
     }
     @Test
     void deletePostIdNotFound(){
-        when(repository.existId(1L)).thenReturn(false);
+        when(repository.existsById(1L)).thenReturn(false);
 
         PostWithIdNotFound exception=assertThrows(PostWithIdNotFound.class,
                 ()->service.deletePost(1L));
         assertEquals("Пост с таким ID не найден",exception.getMessage());
-        verify(repository,never()).deletePost(1L);
+        verify(repository,never()).deleteById(1L);
     }
+
 }

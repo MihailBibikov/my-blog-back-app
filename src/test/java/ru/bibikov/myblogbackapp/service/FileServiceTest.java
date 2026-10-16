@@ -9,11 +9,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.util.ReflectionTestUtils;
 import ru.bibikov.myblogbackapp.exception.file.FileStorageException;
+import ru.bibikov.myblogbackapp.model.Post;
 import ru.bibikov.myblogbackapp.repository.FileRepository;
+import ru.bibikov.myblogbackapp.utils.DataUtil;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -49,7 +52,7 @@ class FileServiceTest {
         assertTrue(savedFileName.endsWith(".jpg"));
         assertTrue(savedFileName.matches("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\\.jpg$"));
         Path savedFilePath=tempDir.resolve(savedFileName);
-        assertTrue(Files.exists(savedFilePath),"Файд должен быть созранен на диске");
+        assertTrue(Files.exists(savedFilePath),"Файл должен быть сохранен на диске");
 
         byte[] savedContent=Files.readAllBytes(savedFilePath);
         assertArrayEquals(fileContent,savedContent);
@@ -75,27 +78,30 @@ class FileServiceTest {
     @Test
     void getImageSuccess() {
         Long postId=1L;
+        Post post= DataUtil.getPostPersisted();
         String example="a2527c38-6aae-49ab-be9d-93ef621b582f.png";
 
-        when(repository.getImage(postId)).thenReturn(example);
+        when(repository.findById(anyLong())).thenReturn(Optional.ofNullable(post));
 
         String image=service.getImage(postId);
 
         assertNotNull(image);
         assertEquals(example,image);
 
-        verify(repository).getImage(postId);
+        verify(repository).findById(postId);
     }
 
     @Test
     void updatePostService() {
-        Long postId=1L;
+        Post post=DataUtil.getPostPersisted();
         String example="a2527c38-6aae-49ab-be9d-93ef621b582f.png";
 
-        doNothing().when(repository).updateImage(postId,example);
+        when(repository.findById(anyLong())).thenReturn(Optional.ofNullable(post));
+        when(repository.save(any(Post.class))).thenReturn(post);
 
-        service.updatePostService(postId,example);
+        service.updatePostService(post.getId(),example);
 
-        verify(repository).updateImage(postId,example);
+        verify(repository).findById(post.getId());
+        verify(repository).save(any(Post.class));
     }
 }
