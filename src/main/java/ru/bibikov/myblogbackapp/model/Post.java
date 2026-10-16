@@ -16,6 +16,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 @Entity
 @Table(name="posts")
+@ToString
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

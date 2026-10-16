@@ -1,6 +1,7 @@
 package ru.bibikov.myblogbackapp.controller;
 
 import lombok.AllArgsConstructor;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import java.util.Set;
 @RequestMapping("/api/posts")
 @AllArgsConstructor
 @Slf4j
+@ToString
 public class PostRestController {
 
     private final PostService postService;

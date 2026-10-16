@@ -9,24 +9,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="97927df4-5bf7-490a-a0d6-6bd923acffa4" name="Changes" comment="Привел модели к нужному виду">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/config/CorsConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/repository/TagRepository.java" afterDir="false" />
+    <list default="true" id="97927df4-5bf7-490a-a0d6-6bd923acffa4" name="Changes" comment="Сделал сервисы для постов и комментариев">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/controller/CommentRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/controller/CommentRestController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/controller/ImageRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/controller/ImageRestController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/controller/PostRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/controller/PostRestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/dto/PostPreviewDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/dto/PostPreviewDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/dto/UpdatePostRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/dto/UpdatePostRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/model/Comment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/model/Comment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/model/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/model/Post.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/model/Tag.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/model/Tag.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/repository/CommentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/repository/CommentRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/repository/FileRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/repository/FileRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/repository/PostRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/repository/PostRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/service/CommentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/service/CommentService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/service/FileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/service/FileService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/service/PostService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ru/bibikov/myblogbackapp/controller/ImageRestControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ru/bibikov/myblogbackapp/controller/ImageRestControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ru/bibikov/myblogbackapp/controller/PostRestControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ru/bibikov/myblogbackapp/controller/PostRestControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ru/bibikov/myblogbackapp/service/FileServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ru/bibikov/myblogbackapp/service/FileServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ru/bibikov/myblogbackapp/service/PostServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ru/bibikov/myblogbackapp/service/PostServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,133 +95,141 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Docker.docker-compose.yaml: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;HTTP Request.generated-requests | #10.executor&quot;: &quot;Run&quot;,
-    &quot;HTTP Request.generated-requests | #11.executor&quot;: &quot;Run&quot;,
-    &quot;HTTP Request.generated-requests | #12.executor&quot;: &quot;Run&quot;,
-    &quot;HTTP Request.generated-requests | #13.executor&quot;: &quot;Run&quot;,
-    &quot;HTTP Request.generated-requests | #14.executor&quot;: &quot;Run&quot;,
-    &quot;HTTP Request.generated-requests | #15.executor&quot;: &quot;Run&quot;,
-    &quot;HTTP Request.generated-requests | #3.executor&quot;: &quot;Run&quot;,
-    &quot;HTTP Request.generated-requests | #4.executor&quot;: &quot;Run&quot;,
-    &quot;HTTP Request.generated-requests | #5.executor&quot;: &quot;Run&quot;,
-    &quot;HTTP Request.generated-requests | #6.executor&quot;: &quot;Run&quot;,
-    &quot;HTTP Request.generated-requests | #7.executor&quot;: &quot;Run&quot;,
-    &quot;HTTP Request.generated-requests | #8.executor&quot;: &quot;Run&quot;,
-    &quot;HTTP Request.generated-requests | #9.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CommentRestControllerTest.createCommentPostIdNotFound.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CommentRestControllerTest.createCommentSuccess.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CommentRestControllerTest.deleteComment.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CommentRestControllerTest.deleteCommentIdNotFound.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CommentRestControllerTest.deleteCommentPostIdNotFound.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CommentRestControllerTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CommentRestControllerTest.getComment.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CommentRestControllerTest.getCommentIdNotFound.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CommentRestControllerTest.getCommentPostIdNotFound.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CommentRestControllerTest.getComments.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CommentRestControllerTest.getCommentsPostIdNofFound.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CommentRestControllerTest.updateComment.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CommentRestControllerTest.updateCommentIdNotFound.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CommentRestControllerTest.updateCommentPostIdNotFound.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CommentServiceTest.createCommentPostIdIsNull.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CommentServiceTest.createCommentPostIdNotFound.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CommentServiceTest.createCommentSuccess.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CommentServiceTest.deleteComment.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CommentServiceTest.deleteCommentCommentIdIsNull.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CommentServiceTest.deleteCommentCommentIdNotFound.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CommentServiceTest.deleteCommentPostIdIsNull.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CommentServiceTest.deleteCommentPostIdNotFound.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CommentServiceTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CommentServiceTest.getComment.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CommentServiceTest.getCommentCommentIdIsNull.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CommentServiceTest.getCommentCommentIdNotFount.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CommentServiceTest.getCommentPostIdIsNull.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CommentServiceTest.getCommentPostIdNotFound.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CommentServiceTest.getComments.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CommentServiceTest.getCommentsPostIdIsNull.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CommentServiceTest.getCommentsPostIdNotFound.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CommentServiceTest.updateComment.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CommentServiceTest.updateCommentCommentIdIsNull.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CommentServiceTest.updateCommentCommentIdNotFound.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CommentServiceTest.updateCommentPostIdIsNull.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CommentServiceTest.updateCommentPostIdNotFound.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.FileServiceTest.saveImage.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.FileServiceTest.saveImageFileStorageException.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.FileServiceTest.updatePostService.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ImageRestControllerTest.addOrUpdateImage.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ImageRestControllerTest.addOrUpdateImageWithEmptyFile.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ImageRestControllerTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ImageRestControllerTest.getImage.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ImageRestControllerTest.getImageFileNotFoundOnDisk.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ImageRestControllerTest.getImagePostNotFound.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PostRestControllerTest.createPost.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PostRestControllerTest.deletePost.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PostRestControllerTest.deletePostIdNotFound.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PostRestControllerTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PostRestControllerTest.getPostBad.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PostRestControllerTest.getPostIdIsNull.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PostRestControllerTest.getPostSuccess.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PostRestControllerTest.getPostsSuccess.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PostRestControllerTest.likesIncrement.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PostRestControllerTest.likesIncrementPostIdNotFound.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PostRestControllerTest.likesIncrementSuccess.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PostRestControllerTest.updatePost.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PostRestControllerTest.updatePostIdNotFound.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PostServiceTest.createPost.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PostServiceTest.createPostWithTagsSuccess.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PostServiceTest.createPostWithoutTags.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PostServiceTest.deletePostIdIsNull.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PostServiceTest.deletePostSuccess.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PostServiceTest.getPostSuccess.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PostServiceTest.getPostWhereIdIsNull.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PostServiceTest.getPostWhereIdNotFound.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PostServiceTest.getPosts.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PostServiceTest.getPostsReturnHasNextFalse.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PostServiceTest.getPostsReturnLastPageOne.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PostServiceTest.likesIncrementBad.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PostServiceTest.likesIncrementIdIsNull.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PostServiceTest.likesIncrementIdNotFound.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PostServiceTest.likesIncrementSuccess.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PostServiceTest.updatePost.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PostServiceTest.updatePostIdIsNull.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PostServiceTest.updatePostIdNotFound.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PostServiceTest.updatePostWithoutTagsSuccess.executor&quot;: &quot;Run&quot;,
-    &quot;Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.my-blog-back-app [clean].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.my-blog-back-app [compile].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.my-blog-back-app [package].executor&quot;: &quot;Run&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;Spring Boot.MyBlogBackAppApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Tomcat Server.Tomcat 10.1.55.executor&quot;: &quot;Run&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;разработка-JPA-версии&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Docker.docker-compose.yaml: Compose Deployment.executor": "Run",
+    "HTTP Request.generated-requests | #10.executor": "Run",
+    "HTTP Request.generated-requests | #11.executor": "Run",
+    "HTTP Request.generated-requests | #12.executor": "Run",
+    "HTTP Request.generated-requests | #13.executor": "Run",
+    "HTTP Request.generated-requests | #14.executor": "Run",
+    "HTTP Request.generated-requests | #15.executor": "Run",
+    "HTTP Request.generated-requests | #3.executor": "Run",
+    "HTTP Request.generated-requests | #4.executor": "Run",
+    "HTTP Request.generated-requests | #5.executor": "Run",
+    "HTTP Request.generated-requests | #6.executor": "Run",
+    "HTTP Request.generated-requests | #7.executor": "Run",
+    "HTTP Request.generated-requests | #8.executor": "Run",
+    "HTTP Request.generated-requests | #9.executor": "Run",
+    "JUnit.CommentRestControllerTest.createCommentPostIdNotFound.executor": "Run",
+    "JUnit.CommentRestControllerTest.createCommentSuccess.executor": "Run",
+    "JUnit.CommentRestControllerTest.deleteComment.executor": "Run",
+    "JUnit.CommentRestControllerTest.deleteCommentIdNotFound.executor": "Run",
+    "JUnit.CommentRestControllerTest.deleteCommentPostIdNotFound.executor": "Run",
+    "JUnit.CommentRestControllerTest.executor": "Run",
+    "JUnit.CommentRestControllerTest.getComment.executor": "Run",
+    "JUnit.CommentRestControllerTest.getCommentIdNotFound.executor": "Run",
+    "JUnit.CommentRestControllerTest.getCommentPostIdNotFound.executor": "Run",
+    "JUnit.CommentRestControllerTest.getComments.executor": "Run",
+    "JUnit.CommentRestControllerTest.getCommentsPostIdNofFound.executor": "Run",
+    "JUnit.CommentRestControllerTest.updateComment.executor": "Run",
+    "JUnit.CommentRestControllerTest.updateCommentIdNotFound.executor": "Run",
+    "JUnit.CommentRestControllerTest.updateCommentPostIdNotFound.executor": "Run",
+    "JUnit.CommentServiceTest.createCommentPostIdIsNull.executor": "Run",
+    "JUnit.CommentServiceTest.createCommentPostIdNotFound.executor": "Run",
+    "JUnit.CommentServiceTest.createCommentSuccess.executor": "Run",
+    "JUnit.CommentServiceTest.deleteComment.executor": "Run",
+    "JUnit.CommentServiceTest.deleteCommentCommentIdIsNull.executor": "Run",
+    "JUnit.CommentServiceTest.deleteCommentCommentIdNotFound.executor": "Run",
+    "JUnit.CommentServiceTest.deleteCommentPostIdIsNull.executor": "Run",
+    "JUnit.CommentServiceTest.deleteCommentPostIdNotFound.executor": "Run",
+    "JUnit.CommentServiceTest.executor": "Run",
+    "JUnit.CommentServiceTest.getComment.executor": "Run",
+    "JUnit.CommentServiceTest.getCommentCommentIdIsNull.executor": "Run",
+    "JUnit.CommentServiceTest.getCommentCommentIdNotFount.executor": "Run",
+    "JUnit.CommentServiceTest.getCommentPostIdIsNull.executor": "Run",
+    "JUnit.CommentServiceTest.getCommentPostIdNotFound.executor": "Run",
+    "JUnit.CommentServiceTest.getComments.executor": "Run",
+    "JUnit.CommentServiceTest.getCommentsPostIdIsNull.executor": "Run",
+    "JUnit.CommentServiceTest.getCommentsPostIdNotFound.executor": "Run",
+    "JUnit.CommentServiceTest.updateComment.executor": "Run",
+    "JUnit.CommentServiceTest.updateCommentCommentIdIsNull.executor": "Run",
+    "JUnit.CommentServiceTest.updateCommentCommentIdNotFound.executor": "Run",
+    "JUnit.CommentServiceTest.updateCommentPostIdIsNull.executor": "Run",
+    "JUnit.CommentServiceTest.updateCommentPostIdNotFound.executor": "Run",
+    "JUnit.FileServiceTest.executor": "Run",
+    "JUnit.FileServiceTest.getImageSuccess.executor": "Run",
+    "JUnit.FileServiceTest.saveImage.executor": "Run",
+    "JUnit.FileServiceTest.saveImageFileStorageException.executor": "Run",
+    "JUnit.FileServiceTest.updatePostService.executor": "Run",
+    "JUnit.ImageRestControllerTest.addOrUpdateImage.executor": "Run",
+    "JUnit.ImageRestControllerTest.addOrUpdateImageWithEmptyFile.executor": "Run",
+    "JUnit.ImageRestControllerTest.executor": "Run",
+    "JUnit.ImageRestControllerTest.getImage.executor": "Run",
+    "JUnit.ImageRestControllerTest.getImageFileNotFoundOnDisk.executor": "Run",
+    "JUnit.ImageRestControllerTest.getImagePostNotFound.executor": "Run",
+    "JUnit.PostRestControllerTest.createPost.executor": "Run",
+    "JUnit.PostRestControllerTest.deletePost.executor": "Run",
+    "JUnit.PostRestControllerTest.deletePostIdNotFound.executor": "Run",
+    "JUnit.PostRestControllerTest.executor": "Run",
+    "JUnit.PostRestControllerTest.getPostBad.executor": "Run",
+    "JUnit.PostRestControllerTest.getPostIdIsNull.executor": "Run",
+    "JUnit.PostRestControllerTest.getPostSuccess.executor": "Run",
+    "JUnit.PostRestControllerTest.getPostsSuccess.executor": "Run",
+    "JUnit.PostRestControllerTest.likesIncrement.executor": "Run",
+    "JUnit.PostRestControllerTest.likesIncrementPostIdNotFound.executor": "Run",
+    "JUnit.PostRestControllerTest.likesIncrementSuccess.executor": "Run",
+    "JUnit.PostRestControllerTest.updatePost.executor": "Run",
+    "JUnit.PostRestControllerTest.updatePostIdNotFound.executor": "Run",
+    "JUnit.PostServiceTest.createPost.executor": "Run",
+    "JUnit.PostServiceTest.createPostWithTagsSuccess.executor": "Run",
+    "JUnit.PostServiceTest.createPostWithoutTags.executor": "Run",
+    "JUnit.PostServiceTest.createPostWithoutTagsSuccess.executor": "Run",
+    "JUnit.PostServiceTest.deletePostIdIsNull.executor": "Run",
+    "JUnit.PostServiceTest.deletePostIdNotFound.executor": "Run",
+    "JUnit.PostServiceTest.deletePostSuccess.executor": "Run",
+    "JUnit.PostServiceTest.executor": "Run",
+    "JUnit.PostServiceTest.getPostSuccess.executor": "Run",
+    "JUnit.PostServiceTest.getPostWhereIdIsNull.executor": "Run",
+    "JUnit.PostServiceTest.getPostWhereIdNotFound.executor": "Run",
+    "JUnit.PostServiceTest.getPosts.executor": "Run",
+    "JUnit.PostServiceTest.getPostsReturnHasNextFalse.executor": "Run",
+    "JUnit.PostServiceTest.getPostsReturnLastPageOne.executor": "Run",
+    "JUnit.PostServiceTest.getPostsWithSearchParameterPagination.executor": "Run",
+    "JUnit.PostServiceTest.getPostsWithoutSearchParameterPagination.executor": "Run",
+    "JUnit.PostServiceTest.likesIncrementBad.executor": "Run",
+    "JUnit.PostServiceTest.likesIncrementIdIsNull.executor": "Run",
+    "JUnit.PostServiceTest.likesIncrementIdNotFound.executor": "Run",
+    "JUnit.PostServiceTest.likesIncrementSuccess.executor": "Run",
+    "JUnit.PostServiceTest.updatePost.executor": "Run",
+    "JUnit.PostServiceTest.updatePostIdIsNull.executor": "Run",
+    "JUnit.PostServiceTest.updatePostIdNotFound.executor": "Run",
+    "JUnit.PostServiceTest.updatePostWithTagsSuccess.executor": "Run",
+    "JUnit.PostServiceTest.updatePostWithoutTagsSuccess.executor": "Run",
+    "Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor": "Run",
+    "Maven.my-blog-back-app [clean].executor": "Run",
+    "Maven.my-blog-back-app [compile].executor": "Run",
+    "Maven.my-blog-back-app [package].executor": "Run",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "Spring Boot.MyBlogBackAppApplication.executor": "Run",
+    "Tomcat Server.Tomcat 10.1.55.executor": "Run",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "git-widget-placeholder": "разработка-JPA-версии",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "preferences.keymap",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;postgresql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="ru.bibikov.myblogbackapp.dto" />
@@ -239,32 +242,84 @@
       <recent name="" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
-      <recent name="ru.bibikov.myblogbackapp.controller" />
       <recent name="ru.bibikov.myblogbackapp.service" />
+      <recent name="ru.bibikov.myblogbackapp.controller" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.MyBlogBackAppApplication">
-    <configuration name="generated-requests | #12" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" executionIdentifier="#12" index="12" runType="Run single request">
-      <method v="2" />
-    </configuration>
-    <configuration name="generated-requests | #13" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" executionIdentifier="#13" index="13" runType="Run single request">
-      <method v="2" />
-    </configuration>
-    <configuration name="generated-requests | #14" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" executionIdentifier="#14" index="14" runType="Run single request">
-      <method v="2" />
-    </configuration>
-    <configuration name="generated-requests | #15" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" executionIdentifier="#15" index="15" runType="Run single request">
-      <method v="2" />
-    </configuration>
-    <configuration name="MyBlogBackAppApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.ImageRestControllerTest">
+    <configuration name="CommentRestControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="my-blog-back-app" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="ru.bibikov.myblogbackapp.MyBlogBackAppApplication" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ru.bibikov.myblogbackapp.*" />
+          <option name="PATTERN" value="ru.bibikov.myblogbackapp.controller.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <option name="PACKAGE_NAME" value="ru.bibikov.myblogbackapp.controller" />
+      <option name="MAIN_CLASS_NAME" value="ru.bibikov.myblogbackapp.controller.CommentRestControllerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CommentRestControllerTest.getComments" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="my-blog-back-app" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ru.bibikov.myblogbackapp.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ru.bibikov.myblogbackapp.controller" />
+      <option name="MAIN_CLASS_NAME" value="ru.bibikov.myblogbackapp.controller.CommentRestControllerTest" />
+      <option name="METHOD_NAME" value="getComments" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ImageRestControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="my-blog-back-app" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ru.bibikov.myblogbackapp.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ru.bibikov.myblogbackapp.controller" />
+      <option name="MAIN_CLASS_NAME" value="ru.bibikov.myblogbackapp.controller.ImageRestControllerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PostRestControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="my-blog-back-app" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ru.bibikov.myblogbackapp.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ru.bibikov.myblogbackapp.controller" />
+      <option name="MAIN_CLASS_NAME" value="ru.bibikov.myblogbackapp.controller.PostRestControllerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PostRestControllerTest.getPostSuccess" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="my-blog-back-app" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ru.bibikov.myblogbackapp.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ru.bibikov.myblogbackapp.controller" />
+      <option name="MAIN_CLASS_NAME" value="ru.bibikov.myblogbackapp.controller.PostRestControllerTest" />
+      <option name="METHOD_NAME" value="getPostSuccess" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -363,20 +418,20 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="HTTP Request.generated-requests | #15" />
-      <item itemvalue="HTTP Request.generated-requests | #14" />
-      <item itemvalue="HTTP Request.generated-requests | #13" />
-      <item itemvalue="HTTP Request.generated-requests | #12" />
-      <item itemvalue="Spring Boot.MyBlogBackAppApplication" />
+      <item itemvalue="JUnit.CommentRestControllerTest" />
+      <item itemvalue="JUnit.CommentRestControllerTest.getComments" />
+      <item itemvalue="JUnit.ImageRestControllerTest" />
+      <item itemvalue="JUnit.PostRestControllerTest" />
+      <item itemvalue="JUnit.PostRestControllerTest.getPostSuccess" />
       <item itemvalue="Tomcat Server.Tomcat 10.1.55" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Spring Boot.MyBlogBackAppApplication" />
-        <item itemvalue="HTTP Request.generated-requests | #14" />
-        <item itemvalue="HTTP Request.generated-requests | #13" />
-        <item itemvalue="HTTP Request.generated-requests | #15" />
-        <item itemvalue="HTTP Request.generated-requests | #12" />
+        <item itemvalue="JUnit.ImageRestControllerTest" />
+        <item itemvalue="JUnit.CommentRestControllerTest" />
+        <item itemvalue="JUnit.CommentRestControllerTest.getComments" />
+        <item itemvalue="JUnit.PostRestControllerTest" />
+        <item itemvalue="JUnit.PostRestControllerTest.getPostSuccess" />
       </list>
     </recent_temporary>
   </component>
@@ -433,7 +488,11 @@
       <workItem from="1791637088313" duration="8025000" />
       <workItem from="1791730094914" duration="7723000" />
       <workItem from="1791737886060" duration="1321000" />
-      <workItem from="1791806816349" duration="554000" />
+      <workItem from="1791806816349" duration="3513000" />
+      <workItem from="1791814033298" duration="604000" />
+      <workItem from="1792058540110" duration="8149000" />
+      <workItem from="1792133876738" duration="11149000" />
+      <workItem from="1792154804243" duration="4703000" />
     </task>
     <task id="LOCAL-00001" summary="Остановил свою работу на ошибке SQL 07006 при использовании метода updatePost. Переделал полностью код для репозитория и сервиса для постов.">
       <option name="closed" value="true" />
@@ -515,7 +574,15 @@
       <option name="project" value="LOCAL" />
       <updated>1790860614273</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Сделал сервисы для постов и комментариев">
+      <option name="closed" value="true" />
+      <created>1791807954457</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1791807954457</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -555,15 +622,41 @@
     <MESSAGE value="Сделал pom.xml с нужными зависимостями" />
     <MESSAGE value="Создал запускной класс и добавил в application.properties нужные данные и дополнения" />
     <MESSAGE value="Привел модели к нужному виду" />
-    <option name="LAST_COMMIT_MESSAGE" value="Привел модели к нужному виду" />
+    <MESSAGE value="Сделал сервисы для постов и комментариев" />
+    <option name="LAST_COMMIT_MESSAGE" value="Сделал сервисы для постов и комментариев" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/controller/PostRestController.java</url>
-          <line>43</line>
+          <line>45</line>
           <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/controller/ImageRestController.java</url>
+          <line>28</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/controller/ImageRestController.java</url>
+          <line>26</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/controller/ImageRestController.java</url>
+          <line>35</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/controller/ImageRestController.java</url>
+          <line>36</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ru/bibikov/myblogbackapp/controller/ImageRestController.java</url>
+          <line>38</line>
+          <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

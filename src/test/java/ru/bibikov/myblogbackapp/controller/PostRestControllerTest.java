@@ -82,7 +82,7 @@ class PostRestControllerTest {
                 .lastPage(1)
                 .build();
 
-        when(service.getPosts(search,pageNumber,pageSize)).thenReturn(example);
+        when(service.findAll(search,pageNumber,pageSize)).thenReturn(example);
 
         mockMvc.perform(get("/api/posts")
                     .contentType(MediaType.APPLICATION_JSON)
@@ -94,14 +94,14 @@ class PostRestControllerTest {
                 .andExpect(jsonPath("$.hasPrev").value(example.isHasPrev()))
                 .andExpect(jsonPath("$.hasNext").value(example.isHasNext()))
                 .andExpect(jsonPath("$.lastPage").value(example.getLastPage()));
-        verify(service).getPosts(search,pageNumber,pageSize);
+        verify(service).findAll(search,pageNumber,pageSize);
     }
 
     @Test
     void getPostSuccess() throws Exception {
         Post example= DataUtil.getPostDto();
 
-        when(service.getPost(example.getId())).thenReturn(example);
+        when(service.findById(example.getId())).thenReturn(example);
 
         mockMvc.perform(get("/api/posts/{id}",example.getId())
                 .contentType(MediaType.APPLICATION_JSON))
@@ -109,21 +109,22 @@ class PostRestControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(111))
                 .andExpect(jsonPath("$.title").value("Java"))
-                .andExpect(jsonPath("$.tags[0]").value("java"));
+                .andExpect(jsonPath("$.tags[1]").value("Java"))
+                .andExpect(jsonPath("$.tags[0]").value("Equal"));
 
-        verify(service,times(1)).getPost(example.getId());
+        verify(service,times(1)).findById(example.getId());
     }
 
     @Test
     void getPostIdNotFound() throws Exception {
-        when(service.getPost(999L)).thenThrow(new PostWithIdNotFound("Пост с таким ID не найден "));
+        when(service.findById(999L)).thenThrow(new PostWithIdNotFound("Пост с таким ID не найден "));
 
         mockMvc.perform(get("/api/posts/{id}",999L)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(content().string("Пост с таким ID не найден "));
 
-        verify(service,times(1)).getPost(999L);
+        verify(service,times(1)).findById(999L);
     }
 
     @Test
